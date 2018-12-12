@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+	<!-- insert your AIML categories here -->
+<category><pattern> Library</pattern>
+<template> Are you a registered user?Type "Yes I am a registered user"-If you are an existing user And Type "No I am not"-If you are not!
+</template>
+</category>
+   <category>
+      <pattern>_ Library</pattern>
+      <template>
+         <srai>Library</srai>
+      </template>
+   </category>
+
+   <category>
+      <pattern>_ Library</pattern>
+      <template>
+         <srai>Library</srai>
+      </template>
+   </category>
+
+   <category>
+      <pattern>Library *</pattern>
+      <template>
+         <srai>Library</srai>
+      </template>
+   </category>
+
+   <category>
+      <pattern>_ Library *</pattern>
+      <template>
+         <srai>Library</srai>
+      </template>
+   </category>
+</aiml>

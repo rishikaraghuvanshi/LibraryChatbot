@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Libbot</string>
+    <string name="text"> hello world</string>
+    <string name="button">Sign In</string>
+    <string name="warden">Warden</string>
+    <string name="searchresult">Search_Result</string>
+</resources>
