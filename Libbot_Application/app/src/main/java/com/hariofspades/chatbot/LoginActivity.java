@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity  {
     public boolean result;
     private RetrofitClientInterface retrofitClientInterface;
     private ProgressBar progress;
+    public SharedPreferences sharedpreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class LoginActivity extends AppCompatActivity  {
         image = (ImageView) findViewById(R.id.image);
         progress =  (ProgressBar) findViewById(R.id.progress);
 
-
+        sharedpreferences = getSharedPreferences("mypref", Context.MODE_PRIVATE);
         retrofitClientInterface =  APIClient.getClient().create(RetrofitClientInterface.class);
 
 
@@ -131,6 +133,10 @@ public class LoginActivity extends AppCompatActivity  {
                                                          if(password.getText().toString().equals(user.getPassword()))
                                                          {
                                                              Intent i= new Intent(LoginActivity.this, MainActivity.class);
+                                                             SharedPreferences.Editor editor = sharedpreferences.edit();
+                                                             editor.putString("username",user.getUsername());
+                                                             editor.putString("type",user.getType());
+                                                             editor.commit();
                                                              startActivity(i);
                                                          }
                                                          else{

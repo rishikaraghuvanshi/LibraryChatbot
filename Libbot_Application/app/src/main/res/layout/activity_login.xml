@@ -78,6 +78,15 @@
                     android:checked="true"
                     android:text="Student"
                     android:textSize="15sp" />
+                <RadioButton
+                    android:id="@+id/rb_teacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teacher"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="20dp"
+                    android:checked="true"
+                    />
 
             </RadioGroup>
 
@@ -87,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/radiogroup"
                 android:layout_marginTop="10dp"
-                android:hint="Enrollment" />
+                android:hint="Username/Emp_Id" />
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/password"
@@ -105,8 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/password"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="24dp"
                 android:padding="12dp"
                 android:text="Login" />

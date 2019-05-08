@@ -4,4 +4,17 @@
     <string name="button">Sign In</string>
     <string name="warden">Warden</string>
     <string name="searchresult">Search_Result</string>
+    <string name="Search_button">Search</string>
+    <string name = "Name">Name</string>
+    <string name="Book_Name">Book_Name</string>
+    <string name="Author_Name">Author_Name</string>
+    <string name="Book_Id">Book_Id</string>
+    <string name="request_book">Request Book</string>
+    <string name="enter_author_name">Enter Author Name</string>
+    <string name="enter_book_name">Enter Book Name</string>
+    <string name="enter_publisher_name">Enter Publisher Name</string>
+    <string name="todo">TODO</string>
+    <string name="eg_yashwant_kanetkar">Eg: Yashwant Kanetkar</string>
+    <string name="eg_let_us_c">Eg: Let us C</string>
+    <string name="eg_bpb_publications">Eg: BPB Publications</string>
 </resources>

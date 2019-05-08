@@ -12,10 +12,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
-/**
- * Created by SONY on 2/17/2018.
- */
 
 public interface RetrofitClientInterface {
 
@@ -27,4 +25,15 @@ public interface RetrofitClientInterface {
 
     @GET("/books/all")
     Call<ArrayList<BookBean>> getAllBooks();
+
+    @GET("books/search")
+    Call<ArrayList<BookBean>> searchBooks(@Query("bookName") String bookName, @Query("author") String author);
+
+    @GET("books/issue")
+    Call<ResponseBean> issueBook(@Query("id") int id, @Query("username") String username);
+
+    @GET("books/getCheckout")
+    Call<ArrayList<BookBean>> getCheckout(@Query("username") String username);
+
+
 }

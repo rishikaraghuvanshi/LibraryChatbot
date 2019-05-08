@@ -2,22 +2,13 @@ package com.hariofspades.chatbot;
 
 
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,10 +25,9 @@ import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
     private TextView login;
-    private EditText input_name, enrollment, r_name, password, mailid;
+    private EditText layoutname, layoutenrollment, r_name, layoutpassword, emailid;
     private Button btn_signup;
-    private TextInputLayout layoutenrollment, layoutroomname;
-    private RadioButton rb_admin, rb_student;
+    private RadioButton rb_admin, rb_student, rb_teacher;
     private UserBean user;
     private RetrofitClientInterface retrofitClientInterface;
 
@@ -47,14 +37,14 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         login = (TextView) findViewById(R.id.tv_login);
-        input_name = (EditText) findViewById(R.id.input_name);
-        mailid = (EditText) findViewById(R.id.mailid);
-        enrollment = (EditText) findViewById(R.id.enrollment);
-        password = (EditText) findViewById(R.id.password);
-        layoutenrollment = (TextInputLayout) findViewById(R.id.layoutenrollment);
-        btn_signup = (Button) findViewById(R.id.btn_signup);
+        layoutname = (EditText) findViewById(R.id.layoutname);
+        emailid = (EditText) findViewById(R.id.emailid);
+        layoutenrollment = (EditText) findViewById(R.id.layoutenrollment);
+        layoutpassword = (EditText) findViewById(R.id.password);
+        btn_signup = (Button) findViewById(R.id.btn_request);
         rb_student = (RadioButton) findViewById(R.id.rb_student);
         rb_admin = (RadioButton) findViewById(R.id.rb_admin);
+        rb_teacher= (RadioButton) findViewById(R.id.rb_teacher);
 
         retrofitClientInterface =  APIClient.getClient().create(RetrofitClientInterface.class);
 
@@ -70,13 +60,23 @@ public class SignupActivity extends AppCompatActivity {
         rb_student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (enrollment.getText().toString().equals("") || enrollment.getText().toString().equals("Username")) {
+                if (layoutenrollment.getText().toString().equals("") || layoutenrollment.getText().toString().equals("Username")) {
 
                     layoutenrollment.setHint("Enrollment");
                 }
 
             }
         });
+                rb_teacher.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                            layoutenrollment.setHint("Employee Id");
+
+
+                    }
+                }
+        );
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -93,14 +93,16 @@ public class SignupActivity extends AppCompatActivity {
 
                 user=new UserBean();
 
-                user.setEmail(mailid.getText().toString());
-                user.setName(input_name.getText().toString());
-                user.setPassword(password.getText().toString());
+                user.setEmail(emailid.getText().toString());
+                user.setName(layoutname.getText().toString());
+                user.setPassword(layoutpassword.getText().toString());
                 if(rb_admin.isChecked())
                     user.setType("Admin");
+                else if(rb_teacher.isChecked())
+                    user.setType("Teacher");
                 else
                     user.setType("Student");
-                user.setUsername(enrollment.getText().toString());
+                user.setUsername(layoutenrollment.getText().toString());
 
                 Call<ResponseBean> retrofitUserCall =   retrofitClientInterface.addUser(user);
 
