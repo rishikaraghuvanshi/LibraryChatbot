@@ -1,6 +1,8 @@
 package com.hariofspades.chatbot.Pojo;
 
-public class BookBean {
+import java.io.Serializable;
+
+public class BookBean implements Serializable {
 	
 	String book_id;
 	String book_name;

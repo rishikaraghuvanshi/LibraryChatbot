@@ -35,5 +35,8 @@ public interface RetrofitClientInterface {
     @GET("books/getCheckout")
     Call<ArrayList<BookBean>> getCheckout(@Query("username") String username);
 
+    @PUT("books/checkout")
+    Call<ResponseBean> checkout(@Body ArrayList<BookBean> books, @Query("username") String username);
+
 
 }

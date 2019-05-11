@@ -242,18 +242,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 else if(message.equalsIgnoreCase("checkout")){
-                    final SharedPreferences sharedPreferences= getSharedPreferences("mypref", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences= getSharedPreferences("mypref", Context.MODE_PRIVATE);
                     String type = sharedPreferences.getString("type","");
                     sendMessage(message);
                     mEditTextMessage.setText("");
                     if(type.equals(""))
                     {
-                        sendMessage("Login again.");
+                        mimicOtherMessage("Login again.");
                     }
                     else if(type.equals("0") || type.equals("1"))
                     {
-                        sendMessage("You don't have rights to checkout");
-                        dialog.dismiss();
+                        mimicOtherMessage("You don't have rights to checkout");
                     }
                     else if(type.equals("2")){
 
@@ -270,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if(enroll.getText().toString().equals(""))
                                 {
-                                    sendMessage("Enter username");
+                                    mimicOtherMessage("Enter username");
                                     return;
                                 }
 
@@ -281,12 +280,15 @@ public class MainActivity extends AppCompatActivity {
                                         ArrayList<BookBean> books =response.body();
                                         if(books == null || books.size()==0)
                                         {
-                                            Toast.makeText(MainActivity.this, "No Books to checkout", Toast.LENGTH_SHORT).show();
+                                            mimicOtherMessage("No Books to checkout");
                                             dialog.dismiss();
                                         }
                                         else {
-
-
+                                            Intent i = new Intent(MainActivity.this, CheckoutActivity.class);
+                                            i.putExtra("books",books);
+                                            i.putExtra("user",enroll.getText().toString());
+                                            dialog.dismiss();
+                                            startActivity(i);
                                         }
                                     }
 
