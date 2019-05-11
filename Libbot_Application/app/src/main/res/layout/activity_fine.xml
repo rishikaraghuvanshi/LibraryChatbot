@@ -41,14 +41,6 @@
         android:layout_marginTop="72dp"
         android:layout_centerHorizontal="true"
         android:text="Pay Online" />
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_payoffline"
-        android:layout_width="152dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/btn_payonline"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="72dp"
-        android:layout_centerHorizontal="true"
-        android:text="Pay fine in Lrc" />
+
 
 </RelativeLayout>

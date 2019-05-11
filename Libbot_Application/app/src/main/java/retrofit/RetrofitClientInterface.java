@@ -2,6 +2,7 @@ package retrofit;
 
 import com.hariofspades.chatbot.Pojo.BookBean;
 import com.hariofspades.chatbot.Pojo.ResponseBean;
+import com.hariofspades.chatbot.Pojo.ReturnBean;
 import com.hariofspades.chatbot.Pojo.UserBean;
 
 import java.util.ArrayList;
@@ -37,6 +38,12 @@ public interface RetrofitClientInterface {
 
     @PUT("books/checkout")
     Call<ResponseBean> checkout(@Body ArrayList<BookBean> books, @Query("username") String username);
+
+    @GET("books/returnBookDetails")
+    Call< ArrayList<ReturnBean> > returnBookDetails(@Query("username") String username);
+
+    @PUT("books/returnBooks")
+    Call< ResponseBean> returnBook(@Body ArrayList<ReturnBean> books, @Query("username") String username);
 
 
 }

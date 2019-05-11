@@ -21,6 +21,8 @@
     </activity>
     <activity android:name=".LoginActivity"
         android:windowSoftInputMode="stateHidden|adjustResize"/>
+    <activity android:name=".ReturnActivity"
+        android:windowSoftInputMode="stateHidden|adjustResize"/>
     <activity android:name=".CheckoutActivity"
         android:windowSoftInputMode="stateHidden|adjustResize"/>
     <activity android:name=".MainActivity"

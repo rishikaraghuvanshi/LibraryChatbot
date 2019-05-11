@@ -33,6 +33,7 @@ import com.hariofspades.chatbot.Adapter.ChatMessageAdapter;
 import com.hariofspades.chatbot.Pojo.BookBean;
 import com.hariofspades.chatbot.Pojo.ChatMessage;
 import com.hariofspades.chatbot.Pojo.ResponseBean;
+import com.hariofspades.chatbot.Pojo.ReturnBean;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -196,30 +197,207 @@ public class MainActivity extends AppCompatActivity {
                     //mListView.setSelection(mAdapter.getCount() - 1);
 
                 }
+                else if(message.equalsIgnoreCase("check fine" )){
+                    SharedPreferences sharedPreferences= getSharedPreferences("mypref", Context.MODE_PRIVATE);
+                    String type = sharedPreferences.getString("type","");
 
+                    if(type.equals(""))
+                    {
+                        mimicOtherMessage("Login again.");
+                        return;
+                    }
+                    else if(type.equals("0") || type.equals("1"))
+                    {
+                        mimicOtherMessage("You don't have rights to check fine for others.");
+                        return;
+                    }
+
+                    builder = new AlertDialog.Builder(MainActivity.this);
+                    View mview =  getLayoutInflater().inflate(R.layout.dialog_checkout, null);
+                    final EditText enroll = (EditText) mview.findViewById(R.id.enroll);
+                    Button submit = (Button) mview.findViewById(R.id.submit);
+                    builder.setView(mview);
+                    dialog =  builder.create();
+                    dialog.show();
+                    submit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (enroll.getText().toString().equals("")) {
+                                mimicOtherMessage("Enter username");
+                                return;
+                            }
+                            final String user = enroll.getText().toString();
+                            Call <ArrayList<ReturnBean> > call =retrofitClientInterface.returnBookDetails(user);
+                            call.enqueue(new Callback<ArrayList<ReturnBean>>() {
+                                @Override
+                                public void onResponse(Response<ArrayList<ReturnBean>> response) {
+                                    ArrayList<ReturnBean> res= response.body();
+                                    if(res== null || res.size()==0)
+                                    {
+                                        Toast.makeText(MainActivity.this, "Fine Not Found", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    int fine=0;
+                                    for(int i=0; i<res.size();i++)
+                                    {
+                                        if(i==0)
+                                            fine+=res.get(i).getPreviousFine();
+                                        fine+=res.get(i).getFine();
+                                        builder = new AlertDialog.Builder(MainActivity.this);
+                                        View mview = getLayoutInflater().inflate(R.layout.activity_fine, null);
+                                        Fine_Amt = (EditText) mview.findViewById(R.id.Fine);
+                                        Fine_Amt.setText(String.valueOf(fine));
+                                        btn_payonline = (Button) mview.findViewById(R.id.btn_payonline);
+                                        builder.setView(mview);
+                                        dialog = builder.create();
+                                        dialog.show();
+                                        btn_payonline.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent viewIntent =
+                                                        new Intent("android.intent.action.VIEW",
+                                                                Uri.parse("http://www.stackoverflow.com/"));
+                                                startActivity(viewIntent);
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    Toast.makeText(MainActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            });
+
+                        }
+                    });
+
+                }
                 else if (message.equalsIgnoreCase("my fine" )) {
+                    SharedPreferences sharedPreferences= getSharedPreferences("mypref", Context.MODE_PRIVATE);
+                    String type = sharedPreferences.getString("type","");
+                    final String user = sharedPreferences.getString("username","");
+                    if(type.equals(""))
+                    {
+                        mimicOtherMessage("Login again.");
+                        return;
+                    }
+                    else if(type.equals("0") || type.equals("2"))
+                    {
+                        mimicOtherMessage("No fine for staff");
+                        return;
+                    }
+                    Call <ArrayList<ReturnBean> > call =retrofitClientInterface.returnBookDetails(user);
+                    call.enqueue(new Callback<ArrayList<ReturnBean>>() {
+                        @Override
+                        public void onResponse(Response<ArrayList<ReturnBean>> response) {
+                            ArrayList<ReturnBean> res= response.body();
+                            if(res== null || res.size()==0)
+                            {
+                                Toast.makeText(MainActivity.this, "Fine Not Found", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            int fine=0;
+                            for(int i=0; i<res.size();i++)
+                            {
+                                if(i==0)
+                                    fine+=res.get(i).getPreviousFine();
+                                fine+=res.get(i).getFine();
+                                builder = new AlertDialog.Builder(MainActivity.this);
+                                View mview = getLayoutInflater().inflate(R.layout.activity_fine, null);
+                                Fine_Amt = (EditText) mview.findViewById(R.id.Fine);
+                                Fine_Amt.setText(String.valueOf(fine));
+                                btn_payonline = (Button) mview.findViewById(R.id.btn_payonline);
+                                builder.setView(mview);
+                                dialog = builder.create();
+                                dialog.show();
+                                btn_payonline.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent viewIntent =
+                                                new Intent("android.intent.action.VIEW",
+                                                        Uri.parse("http://www.stackoverflow.com/"));
+                                        startActivity(viewIntent);
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Toast.makeText(MainActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    });
 
                     Toast.makeText(MainActivity.this, "Just a minute", Toast.LENGTH_SHORT).show();
                     sendMessage(message);
                     mEditTextMessage.setText("");
+
+                }
+                else if(message.equalsIgnoreCase("return")){
+
+                    SharedPreferences sharedPreferences= getSharedPreferences("mypref", Context.MODE_PRIVATE);
+                    String type = sharedPreferences.getString("type","");
+                    sendMessage(message);
+                    mEditTextMessage.setText("");
+                    if(type.equals(""))
+                    {
+                        mimicOtherMessage("Login again.");
+                        return;
+                    }
+                    else if(type.equals("0") || type.equals("1"))
+                    {
+                        mimicOtherMessage("You don't have rights to return");
+                        return;
+                    }
+
                     builder = new AlertDialog.Builder(MainActivity.this);
-                    View mview = getLayoutInflater().inflate(R.layout.activity_fine, null);
-                    Fine_Amt = (EditText) mview.findViewById(R.id.Fine);
-                    btn_payoffline = (Button) mview.findViewById(R.id.btn_payoffline);
-                    btn_payonline = (Button) mview.findViewById(R.id.btn_payonline);
+                    View mview =  getLayoutInflater().inflate(R.layout.dialog_checkout, null);
+                    final EditText enroll = (EditText) mview.findViewById(R.id.enroll);
+                    Button submit = (Button) mview.findViewById(R.id.submit);
                     builder.setView(mview);
-                    dialog = builder.create();
+                    dialog =  builder.create();
                     dialog.show();
-                    btn_payonline.setOnClickListener(new View.OnClickListener() {
+                    submit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent viewIntent =
-                                    new Intent("android.intent.action.VIEW",
-                                            Uri.parse("http://www.stackoverflow.com/"));
-                            startActivity(viewIntent);
+
+                            if (enroll.getText().toString().equals("")) {
+                                mimicOtherMessage("Enter username");
+                                return;
+                            }
+                            final String user = enroll.getText().toString();
+                            Call <ArrayList<ReturnBean> > call =retrofitClientInterface.returnBookDetails(user);
+                            call.enqueue(new Callback<ArrayList<ReturnBean>>() {
+                                @Override
+                                public void onResponse(Response<ArrayList<ReturnBean>> response) {
+                                    ArrayList<ReturnBean> res= response.body();
+                                    if(res== null || res.size()==0)
+                                    {
+                                        Toast.makeText(MainActivity.this, "No books to return", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    Intent i = new Intent(MainActivity.this, ReturnActivity.class);
+                                    i.putExtra("list",res);
+                                    i.putExtra("user",user);
+                                    startActivity(i);
+                                }
+
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    Toast.makeText(MainActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            });
 
                         }
                     });
+
                 }
                 else if(message.equalsIgnoreCase("issue book")){
                     Toast.makeText(MainActivity.this, "Just a minute", Toast.LENGTH_SHORT).show();
