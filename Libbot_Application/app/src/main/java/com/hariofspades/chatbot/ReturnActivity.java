@@ -50,7 +50,7 @@ public class ReturnActivity extends AppCompatActivity {
             finish();
         }
 
-        returnAdapter = new ReturnAdapter(books,ReturnActivity.this);
+        returnAdapter = new ReturnAdapter(user,books,ReturnActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
